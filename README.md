@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pebble
+
+A no-nonsense place for your notes and tasks.
+
+Pebble is a to-do list web app with a bold, neo-brutalist look. It includes a full sign-up, email verification, and login flow, plus a dashboard for creating, editing, completing, and deleting tasks.
+
+> **Status: front-end prototype.** There is no backend yet. Authentication is simulated and tasks live in memory, so they reset when you refresh the page. See [Demo behaviour](#demo-behaviour) and [Roadmap](#roadmap).
+
+## Features
+
+- **Sign up and log in** with email and password
+- **Email verification screen** with a 4-digit code input (auto-advance, backspace navigation, paste support) and a "Resend email" action
+- **Task dashboard** showing the total number of items and how many are done
+- **Create, edit, delete, and complete** tasks through a modal form
+- **Empty state** for when you have no tasks
+- **Responsive layout** styled with Tailwind CSS
+
+## Tech Stack
+
+| Area      | Technology                                            |
+| --------- | ----------------------------------------------------- |
+| Framework | [Next.js](https://nextjs.org) 16 (App Router)         |
+| UI        | [React](https://react.dev) 19                         |
+| Language  | [TypeScript](https://www.typescriptlang.org) 5        |
+| Styling   | [Tailwind CSS](https://tailwindcss.com) 4             |
+| Fonts     | Space Grotesk and Work Sans via `next/font/google`    |
+| Linting   | ESLint 9 with `eslint-config-next`                    |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (a current LTS release; check the Next.js docs for the minimum version required by Next 16)
+- npm (a `package-lock.json` is included)
+
+### Installation
+
+```bash
+git clone <your-repository-url>
+cd pebble-frontend
+npm install
+```
+
+### Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command         | Description                          |
+| --------------- | ------------------------------------ |
+| `npm run dev`   | Start the development server         |
+| `npm run build` | Create an optimized production build |
+| `npm start`     | Serve the production build           |
+| `npm run lint`  | Run ESLint                           |
 
-## Learn More
+## Demo Behaviour
 
-To learn more about Next.js, take a look at the following resources:
+Because there is no backend, the auth flow is mocked so you can see every state:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Screen       | What to try                                   | Result                                |
+| ------------ | --------------------------------------------- | ------------------------------------- |
+| Sign up      | Submit any values                             | Goes to the verification screen       |
+| Verification | Enter any 4-digit code except `0000`          | Verified, then goes to login          |
+| Verification | Enter `0000`                                  | Shows the invalid-code error          |
+| Login        | Use any email and password                    | Opens the dashboard                   |
+| Login        | Use an email containing the word `unverified` | Shows the unverified-account error    |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The dashboard starts with four sample tasks. Changes are kept in React state only.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/                        # Next.js App Router (layout, global styles, home page)
+│   ├── layout.tsx              # Root layout, fonts, and metadata
+│   ├── page.tsx                # Renders <TodoApp />
+│   └── globals.css             # Tailwind import and shared "neo" utility styles
+└── features/
+    └── todos/
+        ├── components/
+        │   ├── TodoApp.tsx         # Root component: owns all state and screen routing
+        │   ├── ScreenSignUp.tsx    # Sign-up screen
+        │   ├── ScreenVerify.tsx    # Email verification (4-digit code)
+        │   ├── ScreenLogin.tsx     # Login screen
+        │   ├── ScreenDashboard.tsx # Task list, counts, and empty state
+        │   ├── TodoCard.tsx        # A single task card
+        │   ├── TodoModal.tsx       # Create/edit task modal
+        │   ├── AuthCard.tsx        # Shared wrapper for auth screens
+        │   ├── FormField.tsx       # Reusable labelled input
+        │   └── BrandBadge.tsx      # Pebble logo badge
+        └── types/
+            └── todo.ts             # TodoItem, TodoStatus, ScreenState types
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### How it works
+
+`TodoApp` is a client component that holds all application state and switches between screens using a single `ScreenState` value (`"signup" | "verify" | "login" | "dashboard"`). The screen components are presentational: they receive data and callbacks as props. This keeps the UI easy to follow and straightforward to connect to a real API later.
+
+## Roadmap
+
+- [ ] Connect to a backend API for real authentication and email verification
+- [ ] Persist tasks to a database
+- [ ] Add form validation and password rules
+- [ ] Add tests
+- [ ] Use real routes (`/login`, `/signup`, `/dashboard`) instead of in-component screen state
+
+## Note for Contributors
+
+This project uses a recent Next.js version with breaking changes from older releases. Before changing framework-level code, read the relevant guide in `node_modules/next/dist/docs/`. See [AGENTS.md](AGENTS.md) for details.
+
+## License
+
+No license has been specified yet. Add one before distributing this project.

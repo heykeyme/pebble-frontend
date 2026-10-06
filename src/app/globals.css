@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  a {
+    color: #1e1b4b;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+  a:hover {
+    color: #4d5bf7;
+  }
+  ::placeholder {
+    color: #8a8578;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .neo-border {
+    border: 3px solid #141414;
+  }
+  .neo-shadow-sm {
+    box-shadow: 3px 3px 0px #141414;
+  }
+  .neo-shadow {
+    box-shadow: 5px 5px 0px #141414;
+  }
+  .neo-shadow-lg {
+    box-shadow: 8px 8px 0px #141414;
+  }
+  .neo-shadow-xl {
+    box-shadow: 10px 10px 0px #141414;
+  }
+  .neo-shadow-active:active {
+    box-shadow: 0px 0px 0px #141414;
+    transform: translate(4px, 4px);
+  }
+  .neo-focus:focus-visible {
+    outline: 3px solid #4d5bf7;
+    outline-offset: 2px;
+  }
 }
