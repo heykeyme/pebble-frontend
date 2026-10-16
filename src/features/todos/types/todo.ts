@@ -8,3 +8,5 @@ export interface TodoItem {
 }
 
 export type ScreenState = "signup" | "verify" | "login" | "dashboard";
+
+export type DashboardSection = "todos" | "study";
